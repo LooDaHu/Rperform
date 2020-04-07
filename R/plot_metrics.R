@@ -810,3 +810,16 @@ plot_branchmetrics <- function(test_path, metric, branch1, branch2 = "master",
   remove(temp_out)
 }
 
+
+
+run_all_test <- function(num_commits = 5) {
+  test_file_list <- list.files(path = "./tests/testthat/", full.names = TRUE)
+  # stop(length(test_file_list) == 0)
+  # Obtain the metrics data
+  for(test_file in test_file_list){
+    suppressMessages(time_data <- time_compare(test_file, num_commits))
+    # Store the metric data
+    .save_data(time_data, pattern = "*.[rR]$", replacement = "_time.csv",
+               replace_string = basename(test_file))
+  }
+}
